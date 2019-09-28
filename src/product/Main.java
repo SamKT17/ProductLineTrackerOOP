@@ -23,7 +23,7 @@ public class Main extends Application {
   public void start(Stage primaryStage) throws Exception {
 
     Parent root = FXMLLoader.load(getClass().getResource("ProLineGUI.fxml"));
-    primaryStage.setTitle("Product Line Tracker");
+    primaryStage.setTitle("Production Tracker");
     primaryStage.setScene(new Scene(root, 600, 400));
     primaryStage.show();
   }
