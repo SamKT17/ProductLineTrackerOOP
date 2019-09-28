@@ -1,31 +1,75 @@
-# ProductLineOOP
+ProductLineOOP
 
-Program specifications
-See problem statement on course web page (Links to an external site.). 
+Problem Statement
 
-Your program will be evaluated with Analyze -> Inspect Code in IntelliJ IDEA. 
+Scenario
 
-To add FindBugs click File -> Settings -> Plugins -> search findbugs in search box -> click Search in repositories.
-Once installed, you should see FindBugs-IDEA at the bottom left of the window. Click it. Click the icon to Analyze Project Files. Fix bugs or, if it is something you were specified to do, add a comment to lines that are identified as bugs to acknowledge them.
-Documentation specifications
-A README.md file on your repository root page containing information about the program. If your repository doesn't already have one, there is a button on the bottom of the page on GitHub to add one. 
-Mastering Markdown (Links to an external site.)
-Comments that describe non-obvious code.
-Cite any resources used such as web sites, classmates, etc.
-Javadoc comments for every class, field, constructor, and method declaration.
-Programmer name, a description of file, and the date at the top of each file.
-Class diagrams from the IntelliJ plugin (or StarUML) as a PDF in your repository. Help (Links to an external site.)
-Right click package folder -> Diagrams -> Show Diagram -> Java Class Diagrams
-If you don't have a package, add one by right clicking the src folder and choosing New -> Package then drag your .java files into it, leaving option boxes unchecked.
-If you don't see Diagrams...
-The plugin is available on Ultimate edition only.
-It is installed by default but if you don't have it you can add it through File -> Settings -> Plugins -> search UML Support. 
-Save the diagram as an image, put the image in a document, create a PDF.
-Style specifications
-Follow the Google Java Style Guide (Links to an external site.).
-If you haven't already, download the IntelliJ Java Google Style Guide from https://github.com/google/styleguide (Links to an external site.), unzip it, then import it into IntelliJ through File -> Settings -> Code Style -> Scheme:
-Use Ctrl + Alt + L to auto format.
-When specified, name everything exactly as instructed.
-When not specified, give descriptive names using proper naming conventions (Links to an external site.).
-Your code will be tested using the CheckStyle plugin. File -> Settings -> Plugins -> type checkstyle in search box -> click Search in repositories.
-Once installed, you should see CheckStyle at the bottom left of the window. Click it. Choose Google Checks in the dropdown box for Rules. Click the button to Check Project.
+You have been hired to create software for a media player production facility that will keep track of what products are produced.
+
+Without the software, workers on the production floor are physically producing items and having to write down what is produced in a production log book.
+
+Management would like the production tracking to be more automated so the workers don’t need to spend as much time recording what was produced, the log will be more accurate, and it will be easier to generate production reports.
+
+In addition to the ability to record production, the software also needs the ability to add to the product line (the catalog of products that are able to be produced).
+
+Goals (high level intended outcomes; for software, a Product Backlog)
+Hypothetical / Real world
+Allow a user to add new products that are able to be produced and store them in a collection.
+The collection of products that can be produced can be displayed at any time.
+Allow a user to track production of products, including specifying how many items of that product were created. The program will then create a record for each of these items and store them in a collection.
+The collection of created items can be displayed at any time.
+Production statistics can be displayed – Total items produced, number of each item type, the number of unique products created etc.
+Employee accounts can be made.
+Allow easy modification to handle different products.
+Actual / For class
+Solidify understanding of object oriented programming.
+Practice Java.
+Learn basic graphical user interface (GUI) programming.
+Learn basic database programming.
+Boundaries / Scope (where the functions and responsibilities of the solution start and end / what it should do and what is left to other systems to do)
+Hypothetical / Real world
+For this particular production facility you will only need to track music and movie players.
+The program does not need the ability to place or fulfill orders / reduce stock, just track production.
+Actual / For class
+TBD
+Success criteria (set of conditions to be satisfied at completion; must be measurable and verifiable, like a test)
+Hypothetical / Real world
+Pass tests (in repl.it)
+Follow rules for documentation, style, and coding conventions
+Actual / For class
+Grading forms / rubrics (in Canvas)
+Documentation (see below)
+Style (see below)
+Quality (see below)
+Assignment Specifications - include full project in your repository so your program can be easily imported and run.
+Creation of artifact for portfolio
+Constraints (externally imposed limitations on system requirements, design, or implementation or on the process used to develop or modify a system)
+Hypothetical / Real world
+The program will be a GUI database program written in Java.
+The program must be flexible to allow for future expansion.
+Code should be saved to a private GitHub repository.
+Follow best practices for style, documentation, and quality.
+Actual / For class
+Communication and collaboration with classmates is allowed but should not extend to sharing actual code.
+Assumptions (things that are accepted as true or as certain to happen, without proof)
+You like to program.
+You have foundational knowledge of programming from prerequisite courses.
+You will spend at least 4 hours per week on the project.
+The project should not require more than 7 hours per week. If so, contact the professor for assistance.
+This will help you be successful in future classes and your career.
+Stakeholders (individuals or organizations having a right, share, claim, or interest in a system or in its possession of characteristics that meet their needs and expectations )
+Hypothetical / Real world
+CEO
+CTO
+CIO
+users
+production facility workers
+inventory managers
+customers
+I.T. support
+Actual / For class
+Yourself
+Future potential employers
+Professor
+Timelines (a breakdown of the Product Backlog into time-bound smaller, more detailed tasks in Sprint Backlogs)
+Three 5-week sprints, detailed below.
