@@ -45,7 +45,7 @@
                               <Font name="Apple SD GothicNeo ExtraBold" size="24.0" />
                            </font></Label>
                 <TextField fx:id="manufacturerTextBox" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                <ChoiceBox fx:id="itemTypeComboBox" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                <ChoiceBox fx:id="itemTypeChoiceBox" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
               </children>
             </GridPane>
             <Label layoutX="7.0" layoutY="200.0" text="Existing Products:">

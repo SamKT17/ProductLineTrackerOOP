@@ -26,34 +26,26 @@ public class ProductController implements Initializable {
   public void initialize(URL location, ResourceBundle resources) {
     populateExistingProTA();
     initializeCbo();
+    initializeItemTypeChb();
   }
 
-  @FXML
-  private Button addProduct;
+  @FXML private Button addProduct;
 
-  @FXML
-  private TextField productNameTextBox;
+  @FXML private TextField productNameTextBox;
 
-  @FXML
-  private TextField manufacturerTextBox;
+  @FXML private TextField manufacturerTextBox;
 
-  @FXML
-  private ChoiceBox<?> itemTypeComboBox;
+  @FXML private ChoiceBox<String> itemTypeChoiceBox;
 
-  @FXML
-  private TextArea existingProductsTextArea;
+  @FXML private TextArea existingProductsTextArea;
 
-  @FXML
-  private TextField chooseProductTextBox;
+  @FXML private TextField chooseProductTextBox;
 
-  @FXML
-  private ComboBox<String> chooseQuantityComboBox;
+  @FXML private ComboBox<String> chooseQuantityComboBox;
 
-  @FXML
-  private Button recordProductionBtn;
+  @FXML private Button recordProductionBtn;
 
-  @FXML
-  private TextArea productionLogTextBox;
+  @FXML private TextArea productionLogTextBox;
 
   /**
    * This method handles when the add product button is pressed.
@@ -67,19 +59,16 @@ public class ProductController implements Initializable {
     dbh.initializeDB();
 
     try {
-      String sql = "INSERT INTO PRODUCT (type, manufacturer, name) "
-          + "VALUES ('AUDIO', 'Apple', 'iPod')";
+      String sql =
+          "INSERT INTO PRODUCT (type, manufacturer, name) " + "VALUES ('AUDIO', 'Apple', 'iPod')";
       dbh.stmt.executeUpdate(sql);
       dbh.stmt.close();
-    }
-    catch (SQLException e) {
+    } catch (SQLException e) {
       e.printStackTrace();
     }
   }
 
-  /**
-   * This method and the data from existing products to the existing text area.
-   */
+  /** This method and the data from existing products to the existing text area. */
   private void populateExistingProTA() {
     DatabaseHandler dbh = new DatabaseHandler();
     dbh.initializeDB();
@@ -95,28 +84,25 @@ public class ProductController implements Initializable {
         existingProductsTextArea.appendText("\n");
       }
       dbh.stmt.close();
-    }
-    catch (SQLException e) {
+    } catch (SQLException e) {
       e.printStackTrace();
     }
   }
 
-  /**
-   * This method puts the values 1-10 into the choose quantity combobox.
-   */
+  /** This method puts the values 1-10 into the choose quantity combobox. */
   private void initializeCbo() {
     ObservableList<String> options =
-        FXCollections.observableArrayList(
-            "1", "2", "3", "4", "5",
-            "6", "7", "8", "9", "10"
-        );
+        FXCollections.observableArrayList("1", "2", "3", "4", "5", "6", "7", "8", "9", "10");
     chooseQuantityComboBox.setItems(options);
 
     chooseQuantityComboBox.setEditable(true);
     chooseQuantityComboBox.getSelectionModel().selectFirst();
   }
 
+  /** This method loads the choice box with what items there are. */
+  private void initializeItemTypeChb() {
+    for (ItemType it : ItemType.values()) {
+      itemTypeChoiceBox.getItems().addAll(it.code);
+    }
+  }
 }
-
-
-
