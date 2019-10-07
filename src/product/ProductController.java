@@ -1,19 +1,19 @@
 package product;
 
-import java.net.URL;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ResourceBundle;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
-import javafx.scene.input.MouseEvent;
+    import java.net.URL;
+    import java.sql.ResultSet;
+    import java.sql.SQLException;
+    import java.util.ResourceBundle;
+    import javafx.collections.FXCollections;
+    import javafx.collections.ObservableList;
+    import javafx.fxml.FXML;
+    import javafx.fxml.Initializable;
+    import javafx.scene.control.Button;
+    import javafx.scene.control.ChoiceBox;
+    import javafx.scene.control.ComboBox;
+    import javafx.scene.control.TextArea;
+    import javafx.scene.control.TextField;
+    import javafx.scene.input.MouseEvent;
 
 public class ProductController implements Initializable {
   /**
@@ -55,12 +55,27 @@ public class ProductController implements Initializable {
   @FXML
   void addProductBtnClicked(MouseEvent event) {
 
+    // this sets up the database object
     DatabaseHandler dbh = new DatabaseHandler();
     dbh.initializeDB();
 
-    try {
+    // clears the text box and then gets the text that is put in it
+    productNameTextBox.clear();
+    String nameTB = productNameTextBox.getText();
+
+    // clears the text box and then gets the text that is put in it
+    manufacturerTextBox.clear();
+    String manufacturerTB = manufacturerTextBox.getText();
+
+    // this gets the value from the text box
+    String itemType = itemTypeChoiceBox.getValue();
+
+    Widget newProduct = new Widget(itemType, manufacturerTB, nameTB);
+
+    try {   // insert.....('" + newProduct.getType() + "'.....
       String sql =
-          "INSERT INTO PRODUCT (type, manufacturer, name) " + "VALUES ('AUDIO', 'Apple', 'iPod')";
+          "INSERT INTO PRODUCT (type, manufacturer, name) "
+              + "VALUES (itemType, manufacturerTB, nameTB)"; // '" itemType + "'......
       dbh.stmt.executeUpdate(sql);
       dbh.stmt.close();
     } catch (SQLException e) {
