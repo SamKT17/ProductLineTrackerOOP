@@ -13,7 +13,7 @@ public class DatabaseHandler {
   //  Database credentials
   private static final String USER = "";
   private static final String PASS = "";
-  private Connection conn;
+  Connection conn;
   Statement stmt;
 
   /**
