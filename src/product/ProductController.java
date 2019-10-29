@@ -28,6 +28,7 @@ public class ProductController implements Initializable {
     populateExistingProTA();
     initializeCbo();
     initializeItemTypeChb();
+    initializeProLogTB();
   }
 
   @FXML private Button addProduct;
@@ -123,5 +124,10 @@ public class ProductController implements Initializable {
     for (ItemType it : ItemType.values()) {
       itemTypeChoiceBox.getItems().addAll(it.code);
     }
+  }
+
+  private void initializeProLogTB() {
+    ProductionRecord pr = new ProductionRecord(0);
+    productionLogTextBox.appendText(pr.toString());
   }
 }
