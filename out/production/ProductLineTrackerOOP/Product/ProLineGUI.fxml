@@ -4,8 +4,11 @@
 <?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -52,8 +55,14 @@
                      <font>
                         <Font name="Apple SD GothicNeo ExtraBold" size="23.0" />
                      </font></Label>
-                  <TextArea fx:id="existingProductsTextArea" layoutX="7.0" layoutY="224.0" prefHeight="98.0" prefWidth="587.0" />
             <Button fx:id="addProduct" layoutX="496.0" layoutY="326.0" mnemonicParsing="false" onMouseClicked="#addProductBtnClicked" text="Add Product" />
+                  <TableView fx:id="tvProductTab" layoutX="7.0" layoutY="224.0" prefHeight="135.0" prefWidth="478.0">
+                    <columns>
+                      <TableColumn fx:id="productTabTv" prefWidth="155.0" text="Product" />
+                      <TableColumn fx:id="manufacturerTabTv" prefWidth="144.0" text="Manufactuer" />
+                        <TableColumn fx:id="productTypeTabTv" prefWidth="178.0" text="Product Type" />
+                    </columns>
+                  </TableView>
           </children>
         </AnchorPane>
       </content>
@@ -66,13 +75,13 @@
                      <font>
                         <Font name="Apple SD GothicNeo ExtraBold" size="26.0" />
                      </font></Label>
-            <TextField fx:id="chooseProductTextBox" layoutX="14.0" layoutY="38.0" prefHeight="162.0" prefWidth="571.0" />
             <Label layoutX="15.0" layoutY="207.0" text="Choose Quantity">
                      <font>
                         <Font name="Apple SD GothicNeo ExtraBold" size="20.0" />
                      </font></Label>
             <ComboBox fx:id="chooseQuantityComboBox" layoutX="14.0" layoutY="227.0" prefWidth="150.0" />
-            <Button fx:id="recordProductionBtn" layoutX="452.0" layoutY="227.0" mnemonicParsing="false" text="Record Production" />
+            <Button fx:id="recordProductionBtn" layoutX="452.0" layoutY="227.0" mnemonicParsing="false" onAction="#recordProduction" text="Record Production" />
+                  <ListView fx:id="chooseProductListView" layoutX="11.0" layoutY="37.0" prefHeight="187.0" prefWidth="573.0" />
           </children>
         </AnchorPane>
       </content>

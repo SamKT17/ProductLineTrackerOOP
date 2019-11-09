@@ -14,23 +14,13 @@ public class DatabaseHandler {
   private static final String USER = "";
   private static final String PASS = "";
   Connection conn;
-  Statement stmt;
 
-  /**
-   * This method registers, connects and create a statement used to access the database.
-   */
+  /** This method registers, connects and create a statement used to access the database. */
   public void initializeDB() {
     try {
-      // STEP 1: Register JDBC driver
       Class.forName(JDBC_DRIVER);
 
-      // STEP 2: Open a connection
-      conn = DriverManager.getConnection(DB_URL, USER, PASS);
-
-      // STEP 3: Execute a query
-      stmt = conn.createStatement();
-
-    } catch (SQLException | ClassNotFoundException e) {
+    } catch (ClassNotFoundException e) {
       e.printStackTrace();
     }
   }

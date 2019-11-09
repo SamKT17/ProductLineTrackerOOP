@@ -36,7 +36,7 @@ public abstract class Product implements Item {
     this.type = type;
   }
 
-  public ItemType getItemType() {
+  public ItemType getType() {
     return type;
   }
 
@@ -51,6 +51,3 @@ class Widget extends Product {
     super(name, manufacturer, type);
   }
 }
-// insert.....('" + newProduct.getType() + "'.....
-
-// ArrayList<Product> productLine = new ArrayList<Product>(...);

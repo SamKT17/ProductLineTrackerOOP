@@ -1,20 +1,28 @@
 package product;
 
 import java.net.URL;
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Date;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.ListView;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
+import javax.swing.plaf.nimbus.State;
 
 public class ProductController implements Initializable {
   /**
@@ -25,10 +33,9 @@ public class ProductController implements Initializable {
    */
   @Override
   public void initialize(URL location, ResourceBundle resources) {
-    populateExistingProTA();
     initializeCbo();
     initializeItemTypeChb();
-    initializeProLogTB();
+    initializeProductListView();
   }
 
   @FXML private Button addProduct;
@@ -37,17 +44,25 @@ public class ProductController implements Initializable {
 
   @FXML private TextField manufacturerTextBox;
 
-  @FXML private ChoiceBox<String> itemTypeChoiceBox;
+  @FXML private ChoiceBox<ItemType> itemTypeChoiceBox;
 
-  @FXML private TextArea existingProductsTextArea;
+  @FXML private TableView<Product> tvProductTab;
 
-  @FXML private TextField chooseProductTextBox;
+  @FXML private TableColumn<?, ?> productTabTv;
+
+  @FXML private TableColumn<?, ?> manufacturerTabTv;
+
+  @FXML private TableColumn<?, ?> productTypeTabTv;
+
+  @FXML private ListView<Product> chooseProductListView;
 
   @FXML private ComboBox<String> chooseQuantityComboBox;
 
   @FXML private Button recordProductionBtn;
 
   @FXML private TextArea productionLogTextBox;
+
+  private ObservableList<Product> productLine;
 
   /**
    * This method handles when the add product button is pressed.
@@ -68,18 +83,77 @@ public class ProductController implements Initializable {
     String manufacturerTB = manufacturerTextBox.getText();
 
     // this gets the value from the text box
-    String itemType = itemTypeChoiceBox.getValue();
+    ItemType itemType = itemTypeChoiceBox.getValue();
+
+    String sql = "INSERT INTO PRODUCT (type, manufacturer, name) VALUES (?,?,?)";
 
     try { // insert.....('" + newProduct.getType() + "'.....
-      PreparedStatement ps;
-      String sql = "INSERT INTO PRODUCT (type, manufacturer, name) " + "VALUES (?,?,?)";
-      ps = dbh.conn.prepareStatement(sql);
-      ps.setString(1, itemType);
+      PreparedStatement ps = dbh.conn.prepareStatement(sql);
+
+      ps.setString(1, itemType.code);
       ps.setString(2, manufacturerTB);
       ps.setString(3, nameTB);
 
       ps.executeUpdate();
       ps.close();
+      dbh.conn.close();
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
+    populateTableView(nameTB, manufacturerTB, itemType);
+  }
+
+  /**
+   * This method records production to the production log text box.
+   *
+   * @param event - this is the action of clicking the button.
+   */
+  @FXML
+  void recordProduction(ActionEvent event) {
+
+    Product info = chooseProductListView.getSelectionModel().getSelectedItem();
+
+    String name = info.getName();
+    String manufacturer = info.getManufacturer();
+    ItemType item = info.getType();
+
+    String sql = "SELECT ID FROM PRODUCT WHERE NAME = ? AND TYPE = ? AND MANUFACTURER = ? ";
+
+    DatabaseHandler dbh = new DatabaseHandler();
+    dbh.initializeDB();
+
+    try {
+      PreparedStatement ps = dbh.conn.prepareStatement(sql);
+
+      ps.setString(1, name);
+      ps.setString(2, item.code);
+      ps.setString(3, manufacturer);
+
+      ResultSet rs = ps.executeQuery();
+
+      while (rs.next()) {
+
+        int id = rs.getInt("ID");
+
+        int numberOfProducts = Integer.parseInt(chooseQuantityComboBox.getValue());
+
+        Product product = new Widget(name, manufacturer, item);
+
+        int itemCount = 0;
+
+        for (int i = 0; i < numberOfProducts; i++) {
+          ProductionRecord pr = new ProductionRecord(product, itemCount++);
+
+          ProductionRecord pr1 =
+              new ProductionRecord(i + 1, id, pr.getSerialNum(), pr.getDate());
+
+          productionLogTextBox.appendText(pr1.toString() + "\n");
+        }
+        ps.close();
+        dbh.conn.close();
+      }
+      ps.close();
+      dbh.conn.close();
     } catch (SQLException e) {
       e.printStackTrace();
     }
@@ -88,25 +162,22 @@ public class ProductController implements Initializable {
 
   // ArrayList<Product> productLine = new ArrayList<Product>(...);
 
-  /** This method and the data from existing products to the existing text area. */
-  private void populateExistingProTA() {
-    DatabaseHandler dbh = new DatabaseHandler();
-    dbh.initializeDB();
+  /**
+   * This method displays the table view of what is being placed inside the text fields.
+   *
+   * @param name - name of the product
+   * @param manufacturer - manufacturer of the product
+   * @param itemType - what type of item it is
+   */
+  private void populateTableView(String name, String manufacturer, ItemType itemType) {
+    productLine = FXCollections.observableArrayList();
 
-    try {
-      String sql = "SELECT * FROM PRODUCT";
-      ResultSet rs = dbh.stmt.executeQuery(sql);
+    productTabTv.setCellValueFactory(new PropertyValueFactory<>("name"));
+    manufacturerTabTv.setCellValueFactory(new PropertyValueFactory<>("manufacturer"));
+    productTypeTabTv.setCellValueFactory(new PropertyValueFactory<>("type"));
 
-      while (rs.next()) {
-        for (int i = 1; i <= 4; i++) {
-          existingProductsTextArea.appendText(rs.getString(i) + "\t");
-        }
-        existingProductsTextArea.appendText("\n");
-      }
-      dbh.stmt.close();
-    } catch (SQLException e) {
-      e.printStackTrace();
-    }
+    tvProductTab.setItems(productLine);
+    productLine.add(new Widget(name, manufacturer, itemType));
   }
 
   /** This method puts the values 1-10 into the choose quantity combobox. */
@@ -122,12 +193,61 @@ public class ProductController implements Initializable {
   /** This method loads the choice box with what items there are. */
   private void initializeItemTypeChb() {
     for (ItemType it : ItemType.values()) {
-      itemTypeChoiceBox.getItems().addAll(it.code);
+      itemTypeChoiceBox.getItems().addAll(it);
     }
   }
 
-  private void initializeProLogTB() {
-    ProductionRecord pr = new ProductionRecord(0);
-    productionLogTextBox.appendText(pr.toString());
+  /** This method sets up the list with all the products that can be made. */
+  private void initializeProductListView() {
+
+    Widget product;
+
+    DatabaseHandler dbh = new DatabaseHandler();
+    dbh.initializeDB();
+
+    String sql = "SELECT ID, NAME, TYPE, MANUFACTURER FROM PRODUCT";
+
+    try {
+
+      PreparedStatement ps;
+      ps = dbh.conn.prepareStatement(sql);
+
+      ResultSet rs = ps.executeQuery();
+
+      while (rs.next()) {
+        String name = rs.getString("NAME");
+        String type = rs.getString("TYPE");
+        String manufacturer = rs.getString("MANUFACTURER");
+        int id = rs.getInt("ID");
+
+        ItemType it = null;
+
+        switch (type) {
+          case "AU":
+            it = ItemType.AUDIO;
+            break;
+          case "VI":
+            it = ItemType.VISUAL;
+            break;
+          case "AM":
+            it = ItemType.AUDIO_MOBILE;
+            break;
+          case "VM":
+            it = ItemType.VISUAL_MOBILE;
+            break;
+          default:
+            System.out.println("There is not any item type picked.");
+        }
+
+        product = new Widget(name, manufacturer, it);
+
+        chooseProductListView.getItems().add(product);
+      }
+      ps.close();
+      dbh.conn.close();
+
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
   }
 }
