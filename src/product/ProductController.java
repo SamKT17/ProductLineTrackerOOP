@@ -1,10 +1,12 @@
 package product;
 
+import com.sun.webkit.Disposer.WeakDisposerRecord;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.Date;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
@@ -36,6 +38,7 @@ public class ProductController implements Initializable {
     initializeCbo();
     initializeItemTypeChb();
     initializeProductListView();
+    initializeTableView();
   }
 
   @FXML private Button addProduct;
@@ -101,6 +104,10 @@ public class ProductController implements Initializable {
       e.printStackTrace();
     }
     populateTableView(nameTB, manufacturerTB, itemType);
+
+    Widget product = new Widget(nameTB, manufacturerTB, itemType);
+
+    chooseProductListView.getItems().addAll(product);
   }
 
   /**
@@ -144,13 +151,10 @@ public class ProductController implements Initializable {
         for (int i = 0; i < numberOfProducts; i++) {
           ProductionRecord pr = new ProductionRecord(product, itemCount++);
 
-          ProductionRecord pr1 =
-              new ProductionRecord(i + 1, id, pr.getSerialNum(), pr.getDate());
+          ProductionRecord pr1 = new ProductionRecord(i + 1, id, pr.getSerialNum(), pr.getDate());
 
           productionLogTextBox.appendText(pr1.toString() + "\n");
         }
-        ps.close();
-        dbh.conn.close();
       }
       ps.close();
       dbh.conn.close();
@@ -172,12 +176,9 @@ public class ProductController implements Initializable {
   private void populateTableView(String name, String manufacturer, ItemType itemType) {
     productLine = FXCollections.observableArrayList();
 
-    productTabTv.setCellValueFactory(new PropertyValueFactory<>("name"));
-    manufacturerTabTv.setCellValueFactory(new PropertyValueFactory<>("manufacturer"));
-    productTypeTabTv.setCellValueFactory(new PropertyValueFactory<>("type"));
-
-    tvProductTab.setItems(productLine);
     productLine.add(new Widget(name, manufacturer, itemType));
+
+    tvProductTab.getItems().add(new Widget(name, manufacturer, itemType));
   }
 
   /** This method puts the values 1-10 into the choose quantity combobox. */
@@ -205,20 +206,21 @@ public class ProductController implements Initializable {
     DatabaseHandler dbh = new DatabaseHandler();
     dbh.initializeDB();
 
-    String sql = "SELECT ID, NAME, TYPE, MANUFACTURER FROM PRODUCT";
+    String sql = "SELECT NAME, TYPE, MANUFACTURER FROM PRODUCT";
 
     try {
 
-      PreparedStatement ps;
-      ps = dbh.conn.prepareStatement(sql);
+      System.out.println("test");
 
-      ResultSet rs = ps.executeQuery();
+      Statement stmt = dbh.conn.createStatement();
+
+      ResultSet rs = stmt.executeQuery(sql);
 
       while (rs.next()) {
         String name = rs.getString("NAME");
         String type = rs.getString("TYPE");
         String manufacturer = rs.getString("MANUFACTURER");
-        int id = rs.getInt("ID");
+        // int id = rs.getInt("ID");
 
         ItemType it = null;
 
@@ -241,11 +243,67 @@ public class ProductController implements Initializable {
 
         product = new Widget(name, manufacturer, it);
 
-        chooseProductListView.getItems().add(product);
+        chooseProductListView.getItems().addAll(product);
       }
-      ps.close();
+      stmt.close();
       dbh.conn.close();
 
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
+  }
+
+  /**
+   * This method initializes the table view at the start of the program.
+   */
+  private void initializeTableView() {
+
+    productLine = FXCollections.observableArrayList();
+
+    DatabaseHandler dbh = new DatabaseHandler();
+    dbh.initializeDB();
+
+    String sql = "SELECT NAME, TYPE, MANUFACTURER FROM PRODUCT";
+
+    try {
+
+      Statement stmt = dbh.conn.createStatement();
+
+      ResultSet rs = stmt.executeQuery(sql);
+
+      while (rs.next()) {
+        String name = rs.getString("NAME");
+        String type = rs.getString("TYPE");
+        String manufacturer = rs.getString("MANUFACTURER");
+
+        ItemType it = null;
+
+        switch (type) {
+          case "AU":
+            it = ItemType.AUDIO;
+            break;
+          case "VI":
+            it = ItemType.VISUAL;
+            break;
+          case "AM":
+            it = ItemType.AUDIO_MOBILE;
+            break;
+          case "VM":
+            it = ItemType.VISUAL_MOBILE;
+            break;
+          default:
+            System.out.println("There is not any item type picked.");
+        }
+
+        tvProductTab.setItems(productLine);
+        productLine.add(new Widget(name, manufacturer, it));
+      }
+
+      productTabTv.setCellValueFactory(new PropertyValueFactory<>("name"));
+      manufacturerTabTv.setCellValueFactory(new PropertyValueFactory<>("manufacturer"));
+      productTypeTabTv.setCellValueFactory(new PropertyValueFactory<>("type"));
+
+      stmt.close();
     } catch (SQLException e) {
       e.printStackTrace();
     }

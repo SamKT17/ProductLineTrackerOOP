@@ -20,7 +20,9 @@ public class DatabaseHandler {
     try {
       Class.forName(JDBC_DRIVER);
 
-    } catch (ClassNotFoundException e) {
+      conn = DriverManager.getConnection(DB_URL, USER, PASS);
+
+    } catch (ClassNotFoundException | SQLException e) {
       e.printStackTrace();
     }
   }
