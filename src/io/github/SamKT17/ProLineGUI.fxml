@@ -17,7 +17,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<TabPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #A5A5A5;" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="product.ProductController">
+<TabPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #A5A5A5;" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.github.SamKT17.ProductController">
   <tabs>
     <Tab text="Product Line">
       <content>
@@ -59,10 +59,11 @@
                   <TableView fx:id="tvProductTab" layoutX="7.0" layoutY="224.0" prefHeight="135.0" prefWidth="478.0">
                     <columns>
                       <TableColumn fx:id="productTabTv" prefWidth="155.0" text="Product" />
-                      <TableColumn fx:id="manufacturerTabTv" prefWidth="144.0" text="Manufactuer" />
+                      <TableColumn fx:id="manufacturerTabTv" prefWidth="144.0" text="Manufacturer" />
                         <TableColumn fx:id="productTypeTabTv" prefWidth="178.0" text="Product Type" />
                     </columns>
                   </TableView>
+                  <Label fx:id="errorTextProduct" layoutX="299.0" layoutY="192.0" prefHeight="17.0" prefWidth="287.0" />
           </children>
         </AnchorPane>
       </content>
@@ -82,6 +83,7 @@
             <ComboBox fx:id="chooseQuantityComboBox" layoutX="14.0" layoutY="227.0" prefWidth="150.0" />
             <Button fx:id="recordProductionBtn" layoutX="452.0" layoutY="227.0" mnemonicParsing="false" onAction="#recordProduction" text="Record Production" />
                   <ListView fx:id="chooseProductListView" layoutX="11.0" layoutY="37.0" prefHeight="187.0" prefWidth="573.0" />
+                  <Label fx:id="errorTextProduce" layoutX="15.0" layoutY="268.0" prefHeight="17.0" prefWidth="333.0" />
           </children>
         </AnchorPane>
       </content>

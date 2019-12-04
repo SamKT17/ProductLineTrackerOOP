@@ -1,4 +1,4 @@
-package product;
+package io.github.SamKT17;
 
 public class Screen implements ScreenSpec {
   private String resolution;

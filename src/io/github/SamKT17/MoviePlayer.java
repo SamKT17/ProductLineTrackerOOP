@@ -1,4 +1,4 @@
-package product;
+package io.github.SamKT17;
 
 public class MoviePlayer extends Product implements MultimediaControl {
 

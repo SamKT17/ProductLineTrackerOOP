@@ -1,4 +1,4 @@
-package product;
+package io.github.SamKT17;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;

@@ -1,4 +1,4 @@
-package product;
+package io.github.SamKT17;
 
 public abstract class Product implements Item {
   private int id;

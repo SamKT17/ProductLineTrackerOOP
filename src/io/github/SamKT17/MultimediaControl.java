@@ -1,4 +1,4 @@
-package product;
+package io.github.SamKT17;
 
 public interface MultimediaControl {
 

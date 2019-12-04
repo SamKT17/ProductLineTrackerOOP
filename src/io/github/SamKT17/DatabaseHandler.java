@@ -1,9 +1,11 @@
-package product;
+package io.github.SamKT17;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.sql.Statement;
+import java.util.Scanner;
 
 public class DatabaseHandler {
 
@@ -12,11 +14,14 @@ public class DatabaseHandler {
 
   //  Database credentials
   private static final String USER = "";
-  private static final String PASS = "";
   Connection conn;
 
   /** This method registers, connects and create a statement used to access the database. */
-  public void initializeDB() {
+  public void initializeDB() throws FileNotFoundException {
+
+    Scanner sc = new Scanner(new File("Properties.txt"));
+    final java.lang.String PASS = sc.nextLine();
+
     try {
       Class.forName(JDBC_DRIVER);
 

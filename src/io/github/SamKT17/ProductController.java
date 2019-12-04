@@ -1,12 +1,12 @@
-package product;
+package io.github.SamKT17;
 
-import com.sun.webkit.Disposer.WeakDisposerRecord;
+import java.io.FileNotFoundException;
 import java.net.URL;
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Timestamp;
 import java.util.Date;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
@@ -17,6 +17,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -24,8 +25,12 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
-import javax.swing.plaf.nimbus.State;
 
+/**
+ * This class is the main controller for the project and hold the logic for the GUI.
+ *
+ * @author samthomas
+ */
 public class ProductController implements Initializable {
   /**
    * This method starts up at the start of the project.
@@ -35,10 +40,20 @@ public class ProductController implements Initializable {
    */
   @Override
   public void initialize(URL location, ResourceBundle resources) {
+    // initializes the combo box for the quantity
     initializeCbo();
+
+    // initializes the the item type choice box
     initializeItemTypeChb();
+
+    // initializes the
     initializeProductListView();
+
+    //
     initializeTableView();
+
+    // This sets-up the production log
+    initializeProductionLog();
   }
 
   @FXML private Button addProduct;
@@ -65,6 +80,10 @@ public class ProductController implements Initializable {
 
   @FXML private TextArea productionLogTextBox;
 
+  @FXML private Label errorTextProduct;
+
+  @FXML private Label errorTextProduce;
+
   private ObservableList<Product> productLine;
 
   /**
@@ -77,7 +96,11 @@ public class ProductController implements Initializable {
 
     // this sets up the database object
     DatabaseHandler dbh = new DatabaseHandler();
-    dbh.initializeDB();
+    try {
+      dbh.initializeDB();
+    } catch (FileNotFoundException e) {
+      e.printStackTrace();
+    }
 
     // gets the text from the text box
     String nameTB = productNameTextBox.getText();
@@ -127,7 +150,11 @@ public class ProductController implements Initializable {
     String sql = "SELECT ID FROM PRODUCT WHERE NAME = ? AND TYPE = ? AND MANUFACTURER = ? ";
 
     DatabaseHandler dbh = new DatabaseHandler();
-    dbh.initializeDB();
+    try {
+      dbh.initializeDB();
+    } catch (FileNotFoundException e) {
+      e.printStackTrace();
+    }
 
     try {
       PreparedStatement ps = dbh.conn.prepareStatement(sql);
@@ -146,14 +173,32 @@ public class ProductController implements Initializable {
 
         Product product = new Widget(name, manufacturer, item);
 
-        int itemCount = 0;
+        int counter = 0;
 
         for (int i = 0; i < numberOfProducts; i++) {
-          ProductionRecord pr = new ProductionRecord(product, itemCount++);
+          ProductionRecord serial = new ProductionRecord(product, counter + 1);
 
-          ProductionRecord pr1 = new ProductionRecord(i + 1, id, pr.getSerialNum(), pr.getDate());
+          ProductionRecord pr1 =
+              new ProductionRecord(counter + 1, id, serial.getSerialNum(), serial.getDate());
 
           productionLogTextBox.appendText(pr1.toString() + "\n");
+
+          String sqlAdd =
+              "INSERT INTO PRODUCTIONRECORD (PRODUCT_ID, SERIAL_NUM,"
+                  + "DATE_PRODUCED) VALUES (?,?,?)";
+
+          Timestamp ts = new Timestamp(new Date().getTime());
+
+          try {
+            PreparedStatement ps2 = dbh.conn.prepareStatement(sqlAdd);
+            ps2.setInt(1, rs.getInt("ID"));
+            ps2.setString(2, serial.getSerialNum());
+            ps2.setTimestamp(3, ts);
+
+            ps2.executeUpdate();
+          } catch (SQLException e) {
+            e.printStackTrace();
+          }
         }
       }
       ps.close();
@@ -162,9 +207,6 @@ public class ProductController implements Initializable {
       e.printStackTrace();
     }
   }
-  // insert.....('" + newProduct.getType() + "'.....
-
-  // ArrayList<Product> productLine = new ArrayList<Product>(...);
 
   /**
    * This method displays the table view of what is being placed inside the text fields.
@@ -204,7 +246,11 @@ public class ProductController implements Initializable {
     Widget product;
 
     DatabaseHandler dbh = new DatabaseHandler();
-    dbh.initializeDB();
+    try {
+      dbh.initializeDB();
+    } catch (FileNotFoundException e) {
+      e.printStackTrace();
+    }
 
     String sql = "SELECT NAME, TYPE, MANUFACTURER FROM PRODUCT";
 
@@ -253,15 +299,17 @@ public class ProductController implements Initializable {
     }
   }
 
-  /**
-   * This method initializes the table view at the start of the program.
-   */
+  /** This method initializes the table view at the start of the program. */
   private void initializeTableView() {
 
     productLine = FXCollections.observableArrayList();
 
     DatabaseHandler dbh = new DatabaseHandler();
-    dbh.initializeDB();
+    try {
+      dbh.initializeDB();
+    } catch (FileNotFoundException e) {
+      e.printStackTrace();
+    }
 
     String sql = "SELECT NAME, TYPE, MANUFACTURER FROM PRODUCT";
 
@@ -304,6 +352,42 @@ public class ProductController implements Initializable {
       productTypeTabTv.setCellValueFactory(new PropertyValueFactory<>("type"));
 
       stmt.close();
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
+  }
+
+  /** This method initializes the Production log for the previous products that were made. */
+  private void initializeProductionLog() {
+    String sql = "SELECT * FROM PRODUCTIONRECORD";
+
+    DatabaseHandler dbh = new DatabaseHandler();
+    try {
+      dbh.initializeDB();
+
+    } catch (FileNotFoundException e) {
+      e.printStackTrace();
+    }
+
+    try {
+      Statement stmt = dbh.conn.createStatement();
+
+      ResultSet rs = stmt.executeQuery(sql);
+
+      while (rs.next()) {
+
+        String prodNum = rs.getString("PRODUCTION_NUM");
+        String prodId = rs.getString("PRODUCT_ID");
+        String serialNum = rs.getString("SERIAL_NUM");
+        Timestamp dateProduced = rs.getTimestamp("DATE_PRODUCED");
+
+        ProductionRecord pr =
+            new ProductionRecord(
+                Integer.parseInt(prodNum), Integer.parseInt(prodId), serialNum, dateProduced);
+
+        productionLogTextBox.appendText(pr.toString() + "\n");
+      }
+
     } catch (SQLException e) {
       e.printStackTrace();
     }
