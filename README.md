@@ -74,6 +74,10 @@ In addition to the ability to record production, the software also needs the abi
 -   **Timelines** (a breakdown of the Product Backlog into time-bound smaller, more detailed tasks in Sprint Backlogs)
     -   Three 5-week sprints, detailed below.
     
-    ## Demonstration
+## Demonstration
 
-![Alt text](ProductLineTrackerOOP/docs/ProductLineGIF.gif)
+![Alt text](docs/ProductLineGIF.gif)
+
+## Documentation
+
+[JavaDoc](https://github.com/SamKT17/ProductLineTrackerOOP/blob/master/docs/index.html)
