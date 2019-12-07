@@ -18,7 +18,7 @@ This is the Class Diagram:
 ![Alt text](docs/ClassDiagram.jpg)
 
 This is the Database Diagram:
-![Alt text](docs/docs/DatabaseDiagram.jpg)
+![Alt text](docs/DatabaseDiagram.jpg)
 
 ## Getting Started
 
