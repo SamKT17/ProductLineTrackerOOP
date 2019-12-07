@@ -1,4 +1,4 @@
-package io.github.SamKT17;
+package io.github.samkt17;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -7,12 +7,17 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Scanner;
 
-public class DatabaseHandler {
+/**
+ * This class connects us to the database.
+ *
+ * @author - samthomas
+ */
+class DatabaseHandler {
 
   private static final String JDBC_DRIVER = "org.h2.Driver";
   private static final String DB_URL = "jdbc:h2:./res/ProductionDB";
 
-  //  Database credentials
+  // Database credentials
   private static final String USER = "";
   Connection conn;
 

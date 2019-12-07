@@ -1,12 +1,17 @@
-package io.github.SamKT17;
+package io.github.samkt17;
 
 import java.util.Date;
 
-public class ProductionRecord {
+/**
+ * This class is used for creating a new production record.
+ *
+ * @author - samthomas
+ */
+class ProductionRecord {
 
   private int productionNumber;
   private int productID;
-  private String serialNumber;
+  private final String serialNumber;
   private Date date = new Date();
 
   /**
@@ -28,11 +33,10 @@ public class ProductionRecord {
    * @param serialNumber - composed of a few things and comes from the 3rd constructor.
    * @param date - date of when the product is being produced.
    */
-  public ProductionRecord(int productionNumber, int productID, String serialNumber, Date date) {
+  ProductionRecord(int productionNumber, int productID, String serialNumber, Date date) {
     this.productionNumber = productionNumber;
     this.productID = productID;
     this.serialNumber = serialNumber;
-    this.date = date;
   }
 
   /**
@@ -41,7 +45,7 @@ public class ProductionRecord {
    * @param product - passes in the product object.
    * @param countOfItemType - passes in the amount of the product object they want to produce.
    */
-  public ProductionRecord(Product product, int countOfItemType) {
+  ProductionRecord(Product product, int countOfItemType) {
     String serialNumberMan = product.getManufacturer().substring(0, 3);
     String serialNumberType = product.getType().code;
     String serialNumberCount = String.format("%05d", countOfItemType);
@@ -49,37 +53,14 @@ public class ProductionRecord {
     serialNumber = serialNumberMan + serialNumberType + serialNumberCount;
   }
 
-  public int getProductionNum() {
-    return productionNumber;
-  }
-
-  public void setProductionNum(int productionNumber) {
-    this.productionNumber = productionNumber;
-  }
-
-  public int getProductID() {
-    return productID;
-  }
-
-  public void setProductID(int productID) {
-    this.productID = productID;
-  }
-
-  public String getSerialNum() {
+  String getSerialNum() {
     return serialNumber;
   }
 
-  public void setSerialNum(String serialNumber) {
-    this.serialNumber = serialNumber;
+  Date getDate() {
+    return new Date();
   }
 
-  public Date getDate() {
-    return date;
-  }
-
-  public void setProdDate(Date date) {
-    this.date = date;
-  }
 
   @Override
   public String toString() {

@@ -1,8 +1,13 @@
-package io.github.SamKT17;
+package io.github.samkt17;
 
-public class Employee {
+/**
+ * The Employee class creates employee objects to store into the database.
+ *
+ * @author - samthomas
+ */
+class Employee {
 
-  private String name;
+  private final String name;
   private String username;
   private String password;
   private String email;
@@ -23,15 +28,13 @@ public class Employee {
     this.username = initial + lastName;
   }
 
-  private boolean checkName(String name) {
+  private void checkName(String name) {
     if (name.contains(" ")) {
       setEmail(name);
       setUsername(name);
-      return true;
     } else {
       username = "default";
       email = "user@oracleacademy.Test";
-      return false;
     }
   }
 
@@ -44,7 +47,7 @@ public class Employee {
     email = firstName + "." + lastName + "@oracleacademy.Test";
   }
 
-  private boolean isValidPassword(String password) {
+  private void isValidPassword(String password) {
     String regex = "((?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%!]).{3,})";
 
     if(password.matches(regex)){
@@ -52,7 +55,6 @@ public class Employee {
     } else {
       this.password = "pw";
     }
-    return true;
   }
 
   @Override

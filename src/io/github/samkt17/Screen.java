@@ -1,8 +1,14 @@
-package io.github.SamKT17;
+package io.github.samkt17;
 
+/**
+ * This class creates screens for our products.
+ *
+ * @author - samthomas
+ */
 public class Screen implements ScreenSpec {
-  private String resolution;
-  private int refreshRate, responseTime;
+  private final String resolution;
+  private final int refreshRate;
+  private final int responseTime;
 
   Screen(String resolution, int refreshRate, int responseTime){
     this.refreshRate = refreshRate;

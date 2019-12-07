@@ -1,5 +1,10 @@
-package io.github.SamKT17;
+package io.github.samkt17;
 
+/**
+ * This class creates all the products.
+ *
+ * @author - samthomas
+ */
 public abstract class Product implements Item {
   private int id;
   private ItemType type;
@@ -45,6 +50,11 @@ public abstract class Product implements Item {
   }
 }
 
+/**
+ * The widget class extends the product class and it is what we use to access the product class.
+ *
+ * @author - samthomas
+ */
 class Widget extends Product {
 
   Widget(String name, String manufacturer, ItemType type) {

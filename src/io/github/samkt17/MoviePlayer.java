@@ -1,9 +1,14 @@
-package io.github.SamKT17;
+package io.github.samkt17;
 
+/**
+ * This class will be used to have access to the visual devices.
+ *
+ * @author - samthomas
+ */
 public class MoviePlayer extends Product implements MultimediaControl {
 
-  private Screen screen;
-  private MonitorType monitorType;
+  private final Screen screen;
+  private final MonitorType monitorType;
 
   /**
    *  This method is the constructor for the movie player class.
