@@ -3,7 +3,7 @@ package io.github.samkt17;
 /**
  * This interface is the contract for the product class.
  *
- * @author - samthomas
+ * author SamTK17
  */
 interface Item {
 

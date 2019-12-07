@@ -5,7 +5,7 @@ import java.util.Date;
 /**
  * This class is used for creating a new production record.
  *
- * @author - samthomas
+ * author SamTK17
  */
 class ProductionRecord {
 

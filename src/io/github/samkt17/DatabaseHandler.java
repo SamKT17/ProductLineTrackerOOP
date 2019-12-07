@@ -10,7 +10,7 @@ import java.util.Scanner;
 /**
  * This class connects us to the database.
  *
- * @author - samthomas
+ * author SamTK17
  */
 class DatabaseHandler {
 
@@ -21,7 +21,11 @@ class DatabaseHandler {
   private static final String USER = "";
   Connection conn;
 
-  /** This method registers, connects and create a statement used to access the database. */
+  /**
+   * This method registers, connects and create a statement used to access the database.
+   *
+   * @throws FileNotFoundException this is for the password for the database, it is in a text file
+   */
   public void initializeDB() throws FileNotFoundException {
 
     Scanner sc = new Scanner(new File("Properties.txt"));

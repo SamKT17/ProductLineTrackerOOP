@@ -3,7 +3,7 @@ package io.github.samkt17;
 /**
  * This class will be used to have access to the visual devices.
  *
- * @author - samthomas
+ * author SamTK17
  */
 public class MoviePlayer extends Product implements MultimediaControl {
 

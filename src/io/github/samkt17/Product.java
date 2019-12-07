@@ -3,7 +3,7 @@ package io.github.samkt17;
 /**
  * This class creates all the products.
  *
- * @author - samthomas
+ * author SamTK17
  */
 public abstract class Product implements Item {
   private int id;
@@ -53,7 +53,7 @@ public abstract class Product implements Item {
 /**
  * The widget class extends the product class and it is what we use to access the product class.
  *
- * @author - samthomas
+ * author SamTK17
  */
 class Widget extends Product {
 

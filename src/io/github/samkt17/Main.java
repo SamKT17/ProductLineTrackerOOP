@@ -9,7 +9,7 @@ import javafx.stage.Stage;
 /**
  * This applications is a production tracker.
  *
- *  @Author - SamKT17
+ *  author SamTK17
  * */
 public class Main extends Application {
 

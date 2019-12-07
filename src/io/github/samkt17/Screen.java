@@ -3,7 +3,7 @@ package io.github.samkt17;
 /**
  * This class creates screens for our products.
  *
- * @author - samthomas
+ * author SamTK17
  */
 public class Screen implements ScreenSpec {
   private final String resolution;
