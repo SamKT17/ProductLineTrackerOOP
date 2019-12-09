@@ -73,7 +73,7 @@ public class ProductController implements Initializable {
 
   @FXML private ListView<Product> chooseProductListView;
 
-  @FXML private ComboBox<String> chooseQuantityComboBox;
+  @FXML private ComboBox<Integer> chooseQuantityComboBox;
 
   @FXML private Button recordProductionBtn;
 
@@ -116,26 +116,30 @@ public class ProductController implements Initializable {
 
     if (!productNameTextBox.getText().isEmpty()) {
       if (!manufacturerTextBox.getText().isEmpty()) {
-        try {
-          PreparedStatement ps = dbh.conn.prepareStatement(sql);
+        if(!itemTypeChoiceBox.getItems().isEmpty()) {
 
-          ps.setString(1, itemType.code);
-          ps.setString(2, manufacturerTB);
-          ps.setString(3, nameTB);
+          try {
+            PreparedStatement ps = dbh.conn.prepareStatement(sql);
 
-          ps.executeUpdate();
-          // dbh.conn.close();
-          ps.close();
-        } catch (SQLException e) {
-          e.printStackTrace();
+            ps.setString(1, itemType.code);
+            ps.setString(2, manufacturerTB);
+            ps.setString(3, nameTB);
+
+            ps.executeUpdate();
+            // dbh.conn.close();
+            ps.close();
+          } catch (SQLException e) {
+            e.printStackTrace();
+          }
+          populateTableView(nameTB, manufacturerTB, itemType);
+
+          // this uses polymorphism and creates an object
+          Product product = new Widget(nameTB, manufacturerTB, itemType);
+
+          chooseProductListView.getItems().addAll(product);
+        } else {
+          errorTextProduct.setText("Choose a Item Type.");
         }
-        populateTableView(nameTB, manufacturerTB, itemType);
-
-        // this uses polymorphism and creates an object
-        Product product = new Widget(nameTB, manufacturerTB, itemType);
-
-        chooseProductListView.getItems().addAll(product);
-
         // this is the error handling and prevents an error to be thrown
       } else {
         errorTextProduct.setText("Manufacturer Field is empty.");
@@ -168,8 +172,8 @@ public class ProductController implements Initializable {
     }
     // if there was nothing selected in the list view and the quantity is between 1-10
     if (!chooseProductListView.getSelectionModel().isEmpty()) {
-      if (Integer.parseInt(chooseQuantityComboBox.getValue()) <= 10) {
-        if (Integer.parseInt(chooseQuantityComboBox.getValue()) >= 1) {
+      if (chooseQuantityComboBox.getValue() <= 10) {
+        if (chooseQuantityComboBox.getValue() >= 1) {
           String name = info.getName();
           String manufacturer = info.getManufacturer();
           ItemType item = info.getType();
@@ -187,7 +191,7 @@ public class ProductController implements Initializable {
 
               int id = rs.getInt("ID");
 
-              int numberOfProducts = Integer.parseInt(chooseQuantityComboBox.getValue());
+              int numberOfProducts = chooseQuantityComboBox.getValue();
 
               Product product = new Widget(name, manufacturer, item);
 
@@ -258,8 +262,8 @@ public class ProductController implements Initializable {
   /** This method puts the values 1-10 into the choose quantity combobox. */
   private void initializeCbo() {
     // for combo boxes it needs an Observable List
-    ObservableList<String> options =
-        FXCollections.observableArrayList("1", "2", "3", "4", "5", "6", "7", "8", "9", "10");
+    ObservableList<Integer> options =
+        FXCollections.observableArrayList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
     chooseQuantityComboBox.setItems(options);
 
     // makes the combo box editable and it selects the first value
@@ -272,6 +276,7 @@ public class ProductController implements Initializable {
     for (ItemType it : ItemType.values()) {
       itemTypeChoiceBox.getItems().addAll(it);
     }
+    itemTypeChoiceBox.getSelectionModel().selectFirst();
   }
 
   /** This method sets up the list with all the products that can be made. */
