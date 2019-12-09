@@ -2,7 +2,6 @@ package io.github.samkt17;
 
 /**
  * ItemType enum is used to help us keep track of the different types of devices we have.
- *
  * author SamTK17
  */
 public enum ItemType {

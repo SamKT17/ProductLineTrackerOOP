@@ -2,7 +2,6 @@ package io.github.samkt17;
 
 /**
  * This class creates screens for our products.
- *
  * author SamTK17
  */
 public class Screen implements ScreenSpec {

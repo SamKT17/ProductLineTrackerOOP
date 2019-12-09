@@ -2,7 +2,6 @@ package io.github.samkt17;
 
 /**
  * This class creates all the products.
- *
  * author SamTK17
  */
 public abstract class Product implements Item {
@@ -52,7 +51,6 @@ public abstract class Product implements Item {
 
 /**
  * The widget class extends the product class and it is what we use to access the product class.
- *
  * author SamTK17
  */
 class Widget extends Product {

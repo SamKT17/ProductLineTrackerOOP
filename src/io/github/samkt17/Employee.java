@@ -2,7 +2,6 @@ package io.github.samkt17;
 
 /**
  * The Employee class creates employee objects to store into the database.
- *
  * author SamTK17
  */
 class Employee {

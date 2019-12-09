@@ -8,7 +8,6 @@ import javafx.stage.Stage;
 
 /**
  * This applications is a production tracker.
- *
  *  author SamTK17
  * */
 public class Main extends Application {

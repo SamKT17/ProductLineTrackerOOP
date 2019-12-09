@@ -9,7 +9,6 @@ import java.util.Scanner;
 
 /**
  * This class connects us to the database.
- *
  * author SamTK17
  */
 class DatabaseHandler {
@@ -29,12 +28,12 @@ class DatabaseHandler {
   public void initializeDB() throws FileNotFoundException {
 
     Scanner sc = new Scanner(new File("Properties.txt"));
-    final java.lang.String PASS = sc.nextLine();
+    final java.lang.String pass = sc.nextLine();
 
     try {
       Class.forName(JDBC_DRIVER);
 
-      conn = DriverManager.getConnection(DB_URL, USER, PASS);
+      conn = DriverManager.getConnection(DB_URL, USER, pass);
 
     } catch (ClassNotFoundException | SQLException e) {
       e.printStackTrace();

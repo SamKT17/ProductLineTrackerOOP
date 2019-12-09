@@ -2,7 +2,6 @@ package io.github.samkt17;
 
 /**
  * This interface is the contract for the product class.
- *
  * author SamTK17
  */
 interface Item {

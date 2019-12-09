@@ -28,7 +28,6 @@ import javafx.scene.input.MouseEvent;
 
 /**
  * This class is the main controller for the project and hold the logic for the GUI.
- *
  * author SamTK17
  */
 public class ProductController implements Initializable {

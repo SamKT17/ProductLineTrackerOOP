@@ -2,7 +2,6 @@ package io.github.samkt17;
 
 /**
  * This class extends Product and Implements MultimediaControl and lets us access the device.
- *
  * author SamTK17
  */
 public class AudioPlayer extends Product implements MultimediaControl {
