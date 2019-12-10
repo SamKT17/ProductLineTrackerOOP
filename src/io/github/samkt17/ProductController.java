@@ -27,8 +27,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 
 /**
- * This class is the main controller for the project and hold the logic for the GUI.
- * author SamTK17
+ * This class is the main controller for the project and hold the logic for the GUI. author SamTK17
  */
 public class ProductController implements Initializable {
   /**
@@ -73,7 +72,7 @@ public class ProductController implements Initializable {
 
   @FXML private ListView<Product> chooseProductListView;
 
-  @FXML private ComboBox<Integer> chooseQuantityComboBox;
+  @FXML private ComboBox<String> chooseQuantityComboBox;
 
   @FXML private Button recordProductionBtn;
 
@@ -116,7 +115,7 @@ public class ProductController implements Initializable {
 
     if (!productNameTextBox.getText().isEmpty()) {
       if (!manufacturerTextBox.getText().isEmpty()) {
-        if(!itemTypeChoiceBox.getItems().isEmpty()) {
+        if (!itemTypeChoiceBox.getItems().isEmpty()) {
 
           try {
             PreparedStatement ps = dbh.conn.prepareStatement(sql);
@@ -172,8 +171,8 @@ public class ProductController implements Initializable {
     }
     // if there was nothing selected in the list view and the quantity is between 1-10
     if (!chooseProductListView.getSelectionModel().isEmpty()) {
-      if (chooseQuantityComboBox.getValue() <= 10) {
-        if (chooseQuantityComboBox.getValue() >= 1) {
+      if (Integer.parseInt(chooseQuantityComboBox.getValue()) <= 10) {
+        if (Integer.parseInt(chooseQuantityComboBox.getValue()) >= 1) {
           String name = info.getName();
           String manufacturer = info.getManufacturer();
           ItemType item = info.getType();
@@ -191,7 +190,7 @@ public class ProductController implements Initializable {
 
               int id = rs.getInt("ID");
 
-              int numberOfProducts = chooseQuantityComboBox.getValue();
+              int numberOfProducts = Integer.parseInt(chooseQuantityComboBox.getValue());
 
               Product product = new Widget(name, manufacturer, item);
 
@@ -262,8 +261,8 @@ public class ProductController implements Initializable {
   /** This method puts the values 1-10 into the choose quantity combobox. */
   private void initializeCbo() {
     // for combo boxes it needs an Observable List
-    ObservableList<Integer> options =
-        FXCollections.observableArrayList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
+    ObservableList<String> options =
+        FXCollections.observableArrayList("1", "2", "3", "4", "5", "6", "7", "8", "9", "10");
     chooseQuantityComboBox.setItems(options);
 
     // makes the combo box editable and it selects the first value
